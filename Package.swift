@@ -17,27 +17,27 @@ let package = Package(
         .package(url: "https://github.com/thoughtbot/Curry.git", from: "4.0.2"),
         .package(url: "https://github.com/nsoperations/BTree.git", from: "4.1.1"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
-        .package(url: "https://github.com/Quick/Quick.git", from: "2.1.0"),
-        .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.1"),
+//        .package(url: "https://github.com/Quick/Quick.git", from: "2.1.0"),
+//        .package(url: "https://github.com/Quick/Nimble.git", from: "8.0.1"),
     ],
     targets: [
         .target(
             name: "XCDBLD",
             dependencies: ["Result", "ReactiveSwift", "ReactiveTask"]
         ),
-        .testTarget(
-            name: "XCDBLDTests",
-            dependencies: ["XCDBLD", "Nimble"]
-        ),
+//        .testTarget(
+//            name: "XCDBLDTests",
+//            dependencies: ["XCDBLD", "Nimble"]
+//        ),
         .target(
             name: "CarthageKit",
             dependencies: ["XCDBLD", "Tentacle", "Curry", "BTree", "wildmatch", "ReactiveTask", "Yams"]
         ),
-        .testTarget(
-            name: "CarthageKitTests",
-            dependencies: ["CarthageKit", "Quick", "Nimble"],
-            exclude: ["Resources/FakeOldObjc.framework"]
-        ),
+//        .testTarget(
+//            name: "CarthageKitTests",
+//            dependencies: ["CarthageKit", "Quick", "Nimble"],
+//            exclude: ["Resources/FakeOldObjc.framework"]
+//        ),
         .target(
             name: "carthage",
             dependencies: ["XCDBLD", "CarthageKit", "Commandant", "Curry", "PrettyColors"],
