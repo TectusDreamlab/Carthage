@@ -67,14 +67,25 @@ extension MachHeader {
         // This is the command `otool -h` actually invokes
         let task = Task("/usr/bin/xcrun", arguments: [
             "objdump",
-            "-macho",
-            "-private-header",
-            "-non-verbose",
+            "--macho",
+            "--private-header",
+            "--non-verbose",
             url.resolvingSymlinksInPath().path,
             ]
         )
 
         return task.launch(standardInput: nil)
+            .flatMapError { _ -> SignalProducer<TaskEvent<Data>, TaskError> in
+                 // Fallback for 'objdump' in LLVM <9.0.0 (Xcode <11.4) which uses `-` as option prefix instead of `--`
+                 Task("/usr/bin/xcrun", arguments: [
+                     "objdump",
+                     "-macho",
+                     "-private-header",
+                     "-non-verbose",
+                     url.resolvingSymlinksInPath().path,
+                     ]
+                 ).launch(standardInput: nil)
+             }
             .ignoreTaskData()
             .map { String(data: $0, encoding: .utf8) ?? "" }
             .filter { !$0.isEmpty }
